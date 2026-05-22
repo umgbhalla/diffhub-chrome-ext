@@ -1,7 +1,5 @@
 # DiffHub Local
 
-![DiffHub Local logo](assets/logo.svg)
-
 DiffHub Local is a Manifest V3 Chrome extension that lets the public DiffHub UI render pull request diffs that GitHub can only serve to the signed-in browser. It adds an **Open in DiffHub** button to GitHub pull request pages, opens the matching DiffHub route, intercepts DiffHub's diff request, and supplies the patch stream from the user's authenticated GitHub session.
 
 The important point: this extension does not reimplement DiffHub. It keeps DiffHub's renderer and parser intact, and only replaces the diff transport with a local authenticated bridge.
@@ -82,7 +80,6 @@ src/content-script.js
 src/content-script.css
 src/diffhub-content-script.js
 src/diffhub-page-bridge.js
-assets/logo.svg
 assets/icon.svg
 assets/icon16.png
 assets/icon32.png
