@@ -1,0 +1,14 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">DiffHub Local icon</title>
+  <desc id="desc">A split diff panel connected by a local bridge arrow.</desc>
+  <rect width="512" height="512" rx="112" fill="#0B1020"/>
+  <rect x="82" y="92" width="348" height="328" rx="42" fill="#F8FAFC"/>
+  <rect x="116" y="128" width="280" height="42" rx="21" fill="#CBD5E1"/>
+  <rect x="116" y="204" width="120" height="102" rx="22" fill="#DCFCE7"/>
+  <path d="M148 255H204" stroke="#15803D" stroke-width="24" stroke-linecap="round"/>
+  <path d="M176 227V283" stroke="#15803D" stroke-width="24" stroke-linecap="round"/>
+  <rect x="276" y="204" width="120" height="102" rx="22" fill="#FEE2E2"/>
+  <path d="M308 255H364" stroke="#B91C1C" stroke-width="24" stroke-linecap="round"/>
+  <path d="M151 354H361" stroke="#0EA5E9" stroke-width="28" stroke-linecap="round"/>
+  <path d="M318 318L362 354L318 390" stroke="#0EA5E9" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

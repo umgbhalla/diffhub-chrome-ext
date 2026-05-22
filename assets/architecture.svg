@@ -1,0 +1,55 @@
+<svg width="1180" height="520" viewBox="0 0 1180 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">DiffHub Local architecture</title>
+  <desc id="desc">A flow diagram from GitHub pull request to Chrome extension bridge to DiffHub UI.</desc>
+  <rect width="1180" height="520" rx="24" fill="#F8FAFC"/>
+  <text x="48" y="60" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">DiffHub Local request flow</text>
+  <text x="48" y="92" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="16">The extension owns authenticated diff transport. DiffHub still owns rendering.</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="48" y="150" width="220" height="122" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="72" y="184" fill="#0F172A" font-size="20" font-weight="700">GitHub PR tab</text>
+    <text x="72" y="214" fill="#475569" font-size="14">Button content script</text>
+    <text x="72" y="238" fill="#475569" font-size="14">Creates local session</text>
+
+    <rect x="348" y="150" width="220" height="122" rx="16" fill="#ECFEFF" stroke="#67E8F9" stroke-width="2"/>
+    <text x="372" y="184" fill="#155E75" font-size="20" font-weight="700">Extension worker</text>
+    <text x="372" y="214" fill="#0E7490" font-size="14">Stores session</text>
+    <text x="372" y="238" fill="#0E7490" font-size="14">Streams patch chunks</text>
+
+    <rect x="648" y="150" width="220" height="122" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="672" y="184" fill="#0F172A" font-size="20" font-weight="700">DiffHub page</text>
+    <text x="672" y="214" fill="#475569" font-size="14">Main-world fetch patch</text>
+    <text x="672" y="238" fill="#475569" font-size="14">Requests /api/diff</text>
+
+    <rect x="918" y="150" width="214" height="122" rx="16" fill="#FFF7ED" stroke="#FDBA74" stroke-width="2"/>
+    <text x="942" y="184" fill="#9A3412" font-size="20" font-weight="700">GitHub .diff tab</text>
+    <text x="942" y="214" fill="#C2410C" font-size="14">Inactive local tab</text>
+    <text x="942" y="238" fill="#C2410C" font-size="14">Uses browser auth</text>
+
+    <rect x="648" y="340" width="220" height="104" rx="16" fill="#F0FDF4" stroke="#86EFAC" stroke-width="2"/>
+    <text x="672" y="376" fill="#166534" font-size="20" font-weight="700">DiffHub renderer</text>
+    <text x="672" y="406" fill="#15803D" font-size="14">Consumes raw diff stream</text>
+    <text x="672" y="430" fill="#15803D" font-size="14">Displays existing UI</text>
+  </g>
+
+  <g stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M268 211H338"/>
+    <path d="M326 199L338 211L326 223"/>
+    <path d="M568 211H638"/>
+    <path d="M626 199L638 211L626 223"/>
+    <path d="M868 211H908"/>
+    <path d="M896 199L908 211L896 223"/>
+    <path d="M1025 272V318C1025 338 1009 354 989 354H878"/>
+    <path d="M890 342L878 354L890 366"/>
+    <path d="M758 272V330"/>
+    <path d="M746 318L758 330L770 318"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" font-size="13" fill="#334155">
+    <text x="284" y="194">open DiffHub</text>
+    <text x="583" y="194">session id</text>
+    <text x="878" y="194">fetch .diff</text>
+    <text x="912" y="336">chunked patch text</text>
+    <text x="776" y="310">ReadableStream</text>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+.DS_Store
+Thumbs.db
+
+# Local dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Browser extension packages and signing material
+*.zip
+*.crx
+*.pem
+
+# Local runtime noise
+*.log
+tmp/
+.chrome-profile/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.*.example

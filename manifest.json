@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "DiffHub Local",
+  "version": "0.1.0",
+  "description": "Use DiffHub with authenticated GitHub pull request diffs from the local browser.",
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["https://github.com/*", "https://patch-diff.githubusercontent.com/*", "https://diffshub.com/*"],
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "action": {
+    "default_title": "DiffHub Local",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/*/pull/*"],
+      "js": ["src/content-script.js"],
+      "css": ["src/content-script.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://diffshub.com/*"],
+      "js": ["src/diffhub-page-bridge.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://diffshub.com/*"],
+      "js": ["src/diffhub-content-script.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
