@@ -4,8 +4,6 @@ DiffsHub Local is a Manifest V3 Chrome extension that lets the public DiffsHub U
 
 The important point: this extension does not reimplement DiffsHub. It keeps DiffsHub's renderer and parser intact, and only replaces the diff transport with a local authenticated bridge.
 
-![Extension preview](assets/store-preview.svg)
-
 ## Why This Exists
 
 DiffsHub normally opens routes like:
@@ -23,8 +21,6 @@ GET https://diffshub.com/api/diff?path=/owner/repo/pull/123
 That works for public repositories when DiffsHub's backend can fetch the diff. It breaks for private repositories because DiffsHub's server does not have the user's GitHub browser session. DiffsHub Local changes the source of that patch text: Chrome fetches the GitHub PR diff through the signed-in local browser, then streams the patch text back into the already-running DiffsHub page.
 
 ## Architecture
-
-![Architecture diagram](assets/architecture.svg)
 
 1. The GitHub content script detects pull request pages.
 2. It injects an **Open in DiffsHub** button into the PR actions area.
@@ -48,7 +44,7 @@ That works for public repositories when DiffsHub's backend can fetch the diff. I
 ```
 
 6. Open a GitHub pull request.
-7. Click **Open in DiffsHub**.
+7. Click **Open in DiffsHub** on the PR page, or click the DiffsHub Local toolbar icon while the PR tab is active.
 
 After editing extension files, reload the extension from `chrome://extensions` and refresh the GitHub pull request tab.
 
@@ -66,6 +62,9 @@ After editing extension files, reload the extension from `chrome://extensions` a
 `storage`
 : Stores short-lived local session metadata in `chrome.storage.session`.
 
+`Chrome toolbar`
+: Lets the Chrome toolbar icon open DiffsHub for the active GitHub pull request tab.
+
 `scripting`
 : Reads patch text from the temporary authenticated GitHub diff tab.
 
@@ -80,13 +79,6 @@ src/content-script.js
 src/content-script.css
 src/diffshub-content-script.js
 src/diffshub-page-bridge.js
-assets/icon.svg
-assets/icon16.png
-assets/icon32.png
-assets/icon48.png
-assets/icon128.png
-assets/architecture.svg
-assets/store-preview.svg
 ```
 
 Run the static checks before loading or publishing:
@@ -108,7 +100,7 @@ Open DiffsHub from the GitHub PR button again. Sessions are intentionally short-
 Open the GitHub PR's `.diff` URL directly in Chrome and confirm GitHub can generate it while signed in. If GitHub refuses the diff, the extension propagates that failure to DiffsHub.
 
 **The button does not appear on GitHub.**  
-Reload the extension in `chrome://extensions`, then refresh the pull request page. Confirm the URL matches `https://github.com/<owner>/<repo>/pull/<number>`.
+Reload the extension in `chrome://extensions`, then refresh the pull request page. Confirm the URL matches `https://github.com/<owner>/<repo>/pull/<number>`. You can also click the extension toolbar icon while the PR tab is active.
 
 **The page bridge logs duplicate timer warnings.**  
 Those are DiffsHub app-level timing labels being reused during retries. They are noisy but not the root failure; the meaningful error is the propagated fetch/session/diff error.

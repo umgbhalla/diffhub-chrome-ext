@@ -1,5 +1,42 @@
 const sessions = new Map();
 const SESSION_PREFIX = "diffshub-session:";
+const GITHUB_PULL_RE = /^\/([^/]+)\/([^/]+)\/pull\/(\d+)(?:\/.*)?$/;
+
+function parseGitHubPullUrl(rawUrl) {
+  let url;
+  try {
+    url = new URL(rawUrl || "");
+  } catch {
+    return null;
+  }
+
+  if (url.origin !== "https://github.com") return null;
+  const match = url.pathname.match(GITHUB_PULL_RE);
+  if (!match) return null;
+
+  return {
+    owner: match[1],
+    repoName: match[2],
+    pull: match[3],
+    source: url.toString()
+  };
+}
+
+function buildConfigFromPull(pr) {
+  const diffUrl = new URL("/" + pr.owner + "/" + pr.repoName + "/pull/" + pr.pull + ".diff", "https://github.com");
+  return {
+    diff: diffUrl.toString(),
+    source: pr.source,
+    repo: pr.owner + "/" + pr.repoName,
+    pull: pr.pull
+  };
+}
+
+function buildDiffsHubUrl(config, sessionId) {
+  const url = new URL("https://diffshub.com/" + config.repo + "/pull/" + config.pull);
+  url.searchParams.set("diffshub_local_session", sessionId);
+  return url.toString();
+}
 
 function createSessionId() {
   const bytes = new Uint8Array(16);
@@ -48,6 +85,18 @@ function loadSession(sessionId, callback) {
 function forgetSession(sessionId) {
   sessions.delete(sessionId);
   chrome.storage.session.remove(sessionKey(sessionId));
+}
+
+function createViewerSession(sourceTabId, config) {
+  const sessionId = createSessionId();
+  const session = {
+    sourceTabId,
+    config,
+    diffshubTabId: null
+  };
+  sessions.set(sessionId, session);
+  persistSession(sessionId, session);
+  return sessionId;
 }
 
 function sendDiffsHubMessage(tabId, message) {
@@ -170,22 +219,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return false;
   }
 
-  const sessionId = createSessionId();
-  const session = {
-    sourceTabId: sender.tab.id,
-    config: {
-      diff: message.diff,
-      source: message.source,
-      repo: message.repo,
-      pull: message.pull
-    },
-    diffshubTabId: null
-  };
-  sessions.set(sessionId, session);
-  persistSession(sessionId, session);
+  const sessionId = createViewerSession(sender.tab.id, {
+    diff: message.diff,
+    source: message.source,
+    repo: message.repo,
+    pull: message.pull
+  });
 
   sendResponse({ ok: true, sessionId });
   return true;
+});
+
+chrome.action.onClicked.addListener((tab) => {
+  const pr = parseGitHubPullUrl(tab.url);
+  if (!pr || tab.id == null) {
+    console.info("[DiffsHub Local] toolbar click ignored because the active tab is not a GitHub pull request");
+    return;
+  }
+
+  const config = buildConfigFromPull(pr);
+  const sessionId = createViewerSession(tab.id, config);
+  chrome.tabs.create({ url: buildDiffsHubUrl(config, sessionId), active: true });
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
