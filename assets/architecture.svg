@@ -1,9 +1,9 @@
 <svg width="1180" height="520" viewBox="0 0 1180 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">DiffHub Local architecture</title>
-  <desc id="desc">A flow diagram from GitHub pull request to Chrome extension bridge to DiffHub UI.</desc>
+  <title id="title">DiffsHub Local architecture</title>
+  <desc id="desc">A flow diagram from GitHub pull request to Chrome extension bridge to DiffsHub UI.</desc>
   <rect width="1180" height="520" rx="24" fill="#F8FAFC"/>
-  <text x="48" y="60" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">DiffHub Local request flow</text>
-  <text x="48" y="92" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="16">The extension owns authenticated diff transport. DiffHub still owns rendering.</text>
+  <text x="48" y="60" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">DiffsHub Local request flow</text>
+  <text x="48" y="92" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="16">The extension owns authenticated diff transport. DiffsHub still owns rendering.</text>
 
   <g font-family="Inter, Arial, sans-serif">
     <rect x="48" y="150" width="220" height="122" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
@@ -17,7 +17,7 @@
     <text x="372" y="238" fill="#0E7490" font-size="14">Streams patch chunks</text>
 
     <rect x="648" y="150" width="220" height="122" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
-    <text x="672" y="184" fill="#0F172A" font-size="20" font-weight="700">DiffHub page</text>
+    <text x="672" y="184" fill="#0F172A" font-size="20" font-weight="700">DiffsHub page</text>
     <text x="672" y="214" fill="#475569" font-size="14">Main-world fetch patch</text>
     <text x="672" y="238" fill="#475569" font-size="14">Requests /api/diff</text>
 
@@ -27,7 +27,7 @@
     <text x="942" y="238" fill="#C2410C" font-size="14">Uses browser auth</text>
 
     <rect x="648" y="340" width="220" height="104" rx="16" fill="#F0FDF4" stroke="#86EFAC" stroke-width="2"/>
-    <text x="672" y="376" fill="#166534" font-size="20" font-weight="700">DiffHub renderer</text>
+    <text x="672" y="376" fill="#166534" font-size="20" font-weight="700">DiffsHub renderer</text>
     <text x="672" y="406" fill="#15803D" font-size="14">Consumes raw diff stream</text>
     <text x="672" y="430" fill="#15803D" font-size="14">Displays existing UI</text>
   </g>
@@ -46,7 +46,7 @@
   </g>
 
   <g font-family="Inter, Arial, sans-serif" font-size="13" fill="#334155">
-    <text x="284" y="194">open DiffHub</text>
+    <text x="284" y="194">open DiffsHub</text>
     <text x="583" y="194">session id</text>
     <text x="878" y="194">fetch .diff</text>
     <text x="912" y="336">chunked patch text</text>

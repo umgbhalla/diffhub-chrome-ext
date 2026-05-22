@@ -1,4 +1,4 @@
-.diffhub-local-button {
+.diffshub-local-button {
   align-items: center;
   appearance: none;
   background: var(--button-default-bgColor-rest, #f6f8fa);
@@ -14,16 +14,16 @@
   white-space: nowrap;
 }
 
-.diffhub-local-button:hover {
+.diffshub-local-button:hover {
   background: var(--button-default-bgColor-hover, #f3f4f6);
 }
 
-.diffhub-local-button:focus {
+.diffshub-local-button:focus {
   outline: 2px solid var(--focus-outlineColor, #0969da);
   outline-offset: 2px;
 }
 
-.diffhub-local-fallback {
+.diffshub-local-fallback {
   position: fixed;
   right: 16px;
   bottom: 16px;

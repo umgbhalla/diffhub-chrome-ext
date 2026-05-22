@@ -1,5 +1,5 @@
 const sessions = new Map();
-const SESSION_PREFIX = "diffhub-session:";
+const SESSION_PREFIX = "diffshub-session:";
 
 function createSessionId() {
   const bytes = new Uint8Array(16);
@@ -15,7 +15,7 @@ function persistSession(sessionId, session) {
   const record = {
     sourceTabId: session.sourceTabId,
     config: session.config,
-    diffhubTabId: session.diffhubTabId || null,
+    diffshubTabId: session.diffshubTabId || null,
     createdAt: Date.now()
   };
   chrome.storage.session.set({ [sessionKey(sessionId)]: record });
@@ -38,7 +38,7 @@ function loadSession(sessionId, callback) {
     const session = {
       sourceTabId: record.sourceTabId,
       config: record.config,
-      diffhubTabId: record.diffhubTabId || null
+      diffshubTabId: record.diffshubTabId || null
     };
     sessions.set(sessionId, session);
     callback(session);
@@ -50,15 +50,15 @@ function forgetSession(sessionId) {
   chrome.storage.session.remove(sessionKey(sessionId));
 }
 
-function sendDiffHubMessage(tabId, message) {
+function sendDiffsHubMessage(tabId, message) {
   chrome.tabs.sendMessage(tabId, message, () => {
     chrome.runtime.lastError;
   });
 }
 
-async function streamDiffFromNavigation(sessionId, requestId, diffhubTabId, diffUrl) {
+async function streamDiffFromNavigation(sessionId, requestId, diffshubTabId, diffUrl) {
   function send(message) {
-    sendDiffHubMessage(diffhubTabId, {
+    sendDiffsHubMessage(diffshubTabId, {
       requestId,
       ...message
     });
@@ -66,7 +66,7 @@ async function streamDiffFromNavigation(sessionId, requestId, diffhubTabId, diff
 
   let tabId = null;
   try {
-    console.info("[DiffHub Local] opening authenticated diff tab", diffUrl);
+    console.info("[DiffsHub Local] opening authenticated diff tab", diffUrl);
     const tab = await chrome.tabs.create({
       url: diffUrl,
       active: false
@@ -84,7 +84,7 @@ async function streamDiffFromNavigation(sessionId, requestId, diffhubTabId, diff
         if (!text.startsWith("diff --git ") && !text.startsWith("From ")) {
           const preview = text.trim().slice(0, 500);
           await chrome.runtime.sendMessage({
-            type: "diffhub-diff-error",
+            type: "diffshub-diff-error",
             sessionId: activeSessionId,
             requestId: activeRequestId,
             error: preview || "Authenticated diff tab did not return patch text"
@@ -94,24 +94,24 @@ async function streamDiffFromNavigation(sessionId, requestId, diffhubTabId, diff
 
         for (let offset = 0; offset < text.length; offset += chunkSize) {
           await chrome.runtime.sendMessage({
-            type: "diffhub-diff-chunk",
+            type: "diffshub-diff-chunk",
             sessionId: activeSessionId,
             requestId: activeRequestId,
             chunk: text.slice(offset, offset + chunkSize)
           });
         }
         await chrome.runtime.sendMessage({
-          type: "diffhub-diff-done",
+          type: "diffshub-diff-done",
           sessionId: activeSessionId,
           requestId: activeRequestId
         });
       }
     });
-    console.info("[DiffHub Local] finished authenticated diff tab", diffUrl);
+    console.info("[DiffsHub Local] finished authenticated diff tab", diffUrl);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.warn("[DiffHub Local] authenticated diff tab failed", error);
-    send({ type: "diffhub-diff-error", error: "Authenticated diff tab failed: " + message });
+    console.warn("[DiffsHub Local] authenticated diff tab failed", error);
+    send({ type: "diffshub-diff-error", error: "Authenticated diff tab failed: " + message });
   } finally {
     if (tabId != null) {
       chrome.tabs.remove(tabId, () => {
@@ -179,7 +179,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       repo: message.repo,
       pull: message.pull
     },
-    diffhubTabId: null
+    diffshubTabId: null
   };
   sessions.set(sessionId, session);
   persistSession(sessionId, session);
@@ -189,37 +189,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (!message || message.type !== "diffhub-fetch-diff") return false;
-  const diffhubTabId = sender.tab && sender.tab.id;
-  if (diffhubTabId == null) {
-    sendResponse({ ok: false, error: "Missing DiffHub tab" });
+  if (!message || message.type !== "diffshub-fetch-diff") return false;
+  const diffshubTabId = sender.tab && sender.tab.id;
+  if (diffshubTabId == null) {
+    sendResponse({ ok: false, error: "Missing DiffsHub tab" });
     return false;
   }
 
   loadSession(message.sessionId, (session) => {
     if (!session) {
-      sendDiffHubMessage(diffhubTabId, {
-        type: "diffhub-diff-error",
+      sendDiffsHubMessage(diffshubTabId, {
+        type: "diffshub-diff-error",
         requestId: message.requestId,
-        error: "DiffHub local session expired. Reopen from the GitHub PR button."
+        error: "DiffsHub local session expired. Reopen from the GitHub PR button."
       });
       sendResponse({ ok: false, error: "Missing session" });
       return;
     }
 
-    session.diffhubTabId = diffhubTabId;
+    session.diffshubTabId = diffshubTabId;
     persistSession(message.sessionId, session);
-    streamDiffFromNavigation(message.sessionId, message.requestId, diffhubTabId, session.config.diff)
+    streamDiffFromNavigation(message.sessionId, message.requestId, diffshubTabId, session.config.diff)
       .finally(() => sendResponse({ ok: true }));
   });
   return true;
 });
 
 chrome.runtime.onMessage.addListener((message) => {
-  if (!message || !message.type || !message.type.startsWith("diffhub-diff-")) return false;
+  if (!message || !message.type || !message.type.startsWith("diffshub-diff-")) return false;
   loadSession(message.sessionId, (session) => {
-    if (!session || session.diffhubTabId == null) return;
-    chrome.tabs.sendMessage(session.diffhubTabId, {
+    if (!session || session.diffshubTabId == null) return;
+    chrome.tabs.sendMessage(session.diffshubTabId, {
       type: message.type,
       requestId: message.requestId,
       chunk: message.chunk,

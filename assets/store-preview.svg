@@ -1,6 +1,6 @@
 <svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">DiffHub Local preview</title>
-  <desc id="desc">A preview of the GitHub button and the DiffHub rendered diff page.</desc>
+  <title id="title">DiffsHub Local preview</title>
+  <desc id="desc">A preview of the GitHub button and the DiffsHub rendered diff page.</desc>
   <rect width="1280" height="720" fill="#E2E8F0"/>
   <rect x="44" y="44" width="1192" height="632" rx="22" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
   <rect x="44" y="44" width="1192" height="54" rx="22" fill="#0F172A"/>
@@ -15,15 +15,15 @@
     <text x="112" y="180" fill="#0F172A" font-size="24" font-weight="800">GitHub pull request</text>
     <text x="112" y="212" fill="#475569" font-size="15">Conversation · Commits · Checks · Files changed</text>
     <rect x="112" y="252" width="156" height="42" rx="8" fill="#0EA5E9"/>
-    <text x="137" y="279" fill="#FFFFFF" font-size="15" font-weight="700">Open in DiffHub</text>
+    <text x="137" y="279" fill="#FFFFFF" font-size="15" font-weight="700">Open in DiffsHub</text>
     <rect x="112" y="334" width="400" height="18" rx="9" fill="#CBD5E1"/>
     <rect x="112" y="374" width="344" height="14" rx="7" fill="#E2E8F0"/>
     <rect x="112" y="406" width="420" height="14" rx="7" fill="#E2E8F0"/>
     <rect x="112" y="438" width="276" height="14" rx="7" fill="#E2E8F0"/>
 
     <rect x="672" y="136" width="500" height="468" rx="16" fill="#0B1020" stroke="#334155" stroke-width="2"/>
-    <text x="702" y="180" fill="#F8FAFC" font-size="24" font-weight="800">DiffHub rendered locally</text>
-    <text x="702" y="212" fill="#94A3B8" font-size="15">The real DiffHub page receives a browser-authenticated diff stream.</text>
+    <text x="702" y="180" fill="#F8FAFC" font-size="24" font-weight="800">DiffsHub rendered locally</text>
+    <text x="702" y="212" fill="#94A3B8" font-size="15">The real DiffsHub page receives a browser-authenticated diff stream.</text>
     <rect x="702" y="252" width="154" height="284" rx="10" fill="#111827"/>
     <rect x="724" y="278" width="94" height="12" rx="6" fill="#38BDF8"/>
     <rect x="724" y="310" width="110" height="10" rx="5" fill="#64748B"/>

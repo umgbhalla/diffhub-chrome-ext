@@ -1,5 +1,5 @@
 (() => {
-  const BUTTON_ID = "diffhub-local-open";
+  const BUTTON_ID = "diffshub-local-open";
   const ROUTE_RE = /^\/([^/]+)\/([^/]+)\/pull\/(\d+)(?:\/.*)?$/;
 
   function getPullRequest() {
@@ -21,9 +21,9 @@
     };
   }
 
-  function buildDiffHubUrl(config, sessionId) {
+  function buildDiffsHubUrl(config, sessionId) {
     const url = new URL("https://diffshub.com/" + config.repo + "/pull/" + config.pull);
-    url.searchParams.set("dh_local_session", sessionId);
+    url.searchParams.set("diffshub_local_session", sessionId);
     return url.toString();
   }
 
@@ -39,15 +39,15 @@
     const button = document.createElement("button");
     button.id = BUTTON_ID;
     button.type = "button";
-    button.className = "diffhub-local-button" + (fallback ? " diffhub-local-fallback" : "");
-    button.textContent = "Open in DiffHub";
+    button.className = "diffshub-local-button" + (fallback ? " diffshub-local-fallback" : "");
+    button.textContent = "Open in DiffsHub";
     button.addEventListener("click", () => {
       const config = buildConfig(pr);
       chrome.runtime.sendMessage({ type: "open-viewer", ...config }, (response) => {
         if (chrome.runtime.lastError || !response || !response.ok || !response.sessionId) {
           return;
         }
-        window.open(buildDiffHubUrl(config, response.sessionId), "_blank", "noopener,noreferrer");
+        window.open(buildDiffsHubUrl(config, response.sessionId), "_blank", "noopener,noreferrer");
       });
     });
     return button;
@@ -65,7 +65,7 @@
     const mount = findMount();
     if (existing) {
       const shouldFallback = !mount;
-      existing.classList.toggle("diffhub-local-fallback", shouldFallback);
+      existing.classList.toggle("diffshub-local-fallback", shouldFallback);
       if (mount && existing.parentElement !== mount) mount.append(existing);
       if (!mount && existing.parentElement !== document.body) document.body.append(existing);
       return;
